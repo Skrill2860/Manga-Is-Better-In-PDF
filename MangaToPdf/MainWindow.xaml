@@ -7,9 +7,23 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200">
     <Grid>
-        <TextBox x:Name="PathTextBox" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="C:/" VerticalAlignment="Top" Width="200" Margin="154,218,0,0"/>
-        <Button x:Name="ChooseDirButton" Content="Choose directory" Margin="354,218,736,0" VerticalAlignment="Top" Width="110" Height="{ Binding ElementName=PathTextBox, Path=Height }" Background="#FFB9B9B9" Click="ChooseDirButton_Click"/>
-        <Button x:Name="ConvertToPdfButton" Content="Convert to PDF" Margin="155,242,736,511" Height="31" Width="309" Click="ConvertToPdfButton_Click"/>
-        <TextBox x:Name="LogTextBox" Margin="600,0,50,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="582" IsReadOnly="True"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Column="1" x:Name="LogTextBox" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" FontSize="14" FontFamily="Arial"/>
+        <StackPanel Grid.Column="0" HorizontalAlignment="Stretch">
+            <Grid  Background="White" ShowGridLines="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" x:Name="PathTextBox" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="24" Text="C:/" Margin="0,0,0,0"/>
+                <Button Grid.Column="1" x:Name="ChooseDirButton" Content="Choose directory" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="{ Binding ElementName=PathTextBox, Path=Height }" Background="#FFB9B9B9" Click="ChooseDirButton_Click"/>
+            </Grid>
+            <Button x:Name="ConvertToPdfButton" Content="Convert to PDF" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="31" Click="ConvertToPdfButton_Click"/>
+
+        </StackPanel>
+
     </Grid>
 </Window>
