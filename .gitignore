@@ -437,5 +437,9 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 Tests/
+py-env/
+**/python_executables/build/
+**/python_executables/dist/
+**/python_executables/*.spec
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,windows,visualstudiocode
