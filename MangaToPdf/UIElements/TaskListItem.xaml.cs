@@ -28,11 +28,33 @@ namespace MangaToPdf.UIElements
 
         public void PrintLogInfo(string message = "")
         {
-            LogTextBox.Dispatcher.Invoke(() =>
+            if (message == null)
             {
-                LogTextBox.AppendText($"{message}\n");
-                LogTextBox.ScrollToEnd();
-            });
+                return;
+            }
+            if (message.StartsWith("[PROGRESS]"))
+            {
+                if (ProgressBar == null)
+                {
+                    return;
+                }
+                Dispatcher.Invoke(() =>
+                {
+                    ProgressBar.Value = int.Parse(message.Split()[1]);
+                });
+            }
+            else
+            {
+                if (LogTextBox == null)
+                {
+                    return;
+                }
+                LogTextBox.Dispatcher.Invoke(() =>
+                {
+                    LogTextBox.AppendText($"{message}\n");
+                    LogTextBox.ScrollToEnd();
+                });
+            }
         }
 
         public void ClearLog()

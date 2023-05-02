@@ -17,6 +17,11 @@ namespace MangaToPdf
     {
         private string directoryZipPath = "";
 
+        private class ProcessInfo
+        {
+            public Process Process { get; init; }
+            public bool Finished { get; set; }
+        }
         private Dictionary<string, Process> CurrentRunningProcessesDict = new();
 
         public MainWindow()
@@ -62,7 +67,7 @@ namespace MangaToPdf
         /// Resulting PDFs are stored in "zipFolderPath/output".
         /// </summary>
         /// <param name="zipFolderPath">Path to folder that contains zip files downloaded from MangaLib.</param>
-        private void StartConvertionAsync(string zipFolderPath, TaskListItem taskListItem)
+        private void StartConversionAsync(string zipFolderPath, TaskListItem taskListItem)
         {
             Process process = new Process();
             lock (CurrentRunningProcessesDict)
@@ -87,7 +92,6 @@ namespace MangaToPdf
                         {
                             if (CurrentRunningProcessesDict.ContainsKey(zipFolderPath))
                             {
-                                CurrentRunningProcessesDict.Remove(zipFolderPath);
                                 Dispatcher.Invoke(new System.Action(() =>
                                 {
                                     taskListItem.CancelButton.Background = Brushes.Green;
@@ -99,21 +103,28 @@ namespace MangaToPdf
                     });
 
                 // Connect and setup UI Controller
-                process.OutputDataReceived += (s, e) => taskListItem.PrintLogInfo(e.Data);
-                process.ErrorDataReceived += (s, e) => taskListItem.PrintLogInfo(e.Data);
+                process.OutputDataReceived += (s, e) =>
+                {
+                    if (taskListItem is { })
+                        taskListItem.PrintLogInfo(e.Data);
+                };
+                process.ErrorDataReceived += (s, e) =>
+                {
+                    if (taskListItem is { })
+                        taskListItem.PrintLogInfo(e.Data);
+                };
                 taskListItem.CancelButton.Click += new RoutedEventHandler(
                     (object sender, RoutedEventArgs e) =>
                     {
-                        MessageBoxResult result = MessageBox.Show("Отмена конвертации", "После отмены конвертацию нельзя будет продолжить с места остановки. При повторном запуске конвертацииобработка начнется с нуля. Продолжить?", MessageBoxButton.YesNo);
-                        if (result != MessageBoxResult.Yes)
-                        {
-                            return;
-                        }
-
                         lock (CurrentRunningProcessesDict)
                         {
                             if (CurrentRunningProcessesDict.ContainsKey(zipFolderPath))
                             {
+                                MessageBoxResult result = MessageBox.Show("Отмена конвертации", "После отмены конвертацию нельзя будет продолжить с места остановки. При повторном запуске конвертацииобработка начнется с нуля. Продолжить?", MessageBoxButton.YesNo);
+                                if (result != MessageBoxResult.Yes)
+                                {
+                                    return;
+                                }
                                 CurrentRunningProcessesDict[zipFolderPath].Kill();
                                 CurrentRunningProcessesDict.Remove(zipFolderPath);
                             }
@@ -138,7 +149,7 @@ namespace MangaToPdf
             }
             TaskListItem taskListItem = new();
             TaskListPanel.Children.Add(taskListItem);
-            new Thread(() => StartConvertionAsync(directoryZipPath, taskListItem)).Start();
+            new Thread(() => StartConversionAsync(directoryZipPath, taskListItem)).Start();
         }
     }
 }

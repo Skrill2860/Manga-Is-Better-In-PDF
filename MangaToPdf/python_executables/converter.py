@@ -228,6 +228,7 @@ def url_to_pdf():
         merger.close()
         print_with_flush(f"<-- chapters are merged -->\n")
 
+
 def zip_to_pdf(zip_folder_path):
     if zip_folder_path == "":
         print_with_flush("path is empty")
@@ -252,6 +253,7 @@ def zip_to_pdf(zip_folder_path):
         with zipfile.ZipFile(join(zip_folder_path, filename), 'r') as zip_ref:
             zip_ref.extractall(join(output_unzip_folder_path, filename[0:-18]))
         print_with_flush(f"<-- extracted  {filename} -->\n")
+    print_with_flush("[PROGRESS] 10")
     
     # go through each extracted folder and collect all jpeg into a pdf file, which goes to /output
     print_with_flush("\nImage to pdf conversion: -------------------")
@@ -259,7 +261,9 @@ def zip_to_pdf(zip_folder_path):
     volume_dict = {}
     if os.path.exists(output_unzip_folder_path):
         image_directories = sorted([i for i in listdir(output_unzip_folder_path) if not isfile(join(output_unzip_folder_path, i)) and len(i.split()) > 4], key=functools.cmp_to_key(name_compare))
+        count = 0
         for directory_name in image_directories:
+            count += 1
             image_directory_path = join(output_unzip_folder_path, directory_name)
             print_with_flush(f"<-- converting {image_directory_path} -->")
 
@@ -305,7 +309,8 @@ def zip_to_pdf(zip_folder_path):
             volume_dict[volume].append(pdf_chapter_path)
 
             print_with_flush(f"<-- converted {image_directory_path} -->\n")
-
+            print_with_flush(f"[PROGRESS] {int(10 + 70 / len(image_directories) * count)}")
+    print_with_flush("[PROGRESS] 80")
 
     # join chapters into volumes
     print_with_flush("\nCollecting chapters into volumes: ----------")
@@ -324,7 +329,7 @@ def zip_to_pdf(zip_folder_path):
         merger.write(join(output_volume_folder_path, f"{manga_name} Том {volume_idx}.pdf"))
         merger.close()
         print_with_flush(f"<-- volume {volume_idx} done -->\n")
-
+    print_with_flush("[PROGRESS] 90")
     if MAKE_ALL_IN_ONE:
         # join all chapters into one pdf file
         print_with_flush("\nCollecting chapters into one pdf file: -----")
@@ -346,6 +351,7 @@ def zip_to_pdf(zip_folder_path):
         merger.write(join(output_folder_path, f"{manga_name}.pdf"))
         merger.close()
         print_with_flush(f"<-- chapters are merged -->\n")
+    print_with_flush("[PROGRESS] 100")
 
 
 def main():
