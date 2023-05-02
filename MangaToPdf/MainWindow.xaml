@@ -11,7 +11,6 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Column="1" x:Name="LogTextBox" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" FontSize="14" FontFamily="Arial"/>
         <StackPanel Grid.Column="0" HorizontalAlignment="Stretch">
             <Grid  Background="White" ShowGridLines="True">
                 <Grid.ColumnDefinitions>
@@ -24,6 +23,12 @@
             <Button x:Name="ConvertToPdfButton" Content="Convert to PDF" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="31" Click="ConvertToPdfButton_Click"/>
 
         </StackPanel>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Orientation="Vertical" x:Name="TaskListPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            
+            </StackPanel>
+        </ScrollViewer>
 
     </Grid>
 </Window>

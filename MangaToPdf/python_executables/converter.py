@@ -229,7 +229,6 @@ def url_to_pdf():
         print_with_flush(f"<-- chapters are merged -->\n")
 
 def zip_to_pdf(zip_folder_path):
-    print_with_flush("AKSDJOAKSJDOADJ")
     if zip_folder_path == "":
         print_with_flush("path is empty")
         return
