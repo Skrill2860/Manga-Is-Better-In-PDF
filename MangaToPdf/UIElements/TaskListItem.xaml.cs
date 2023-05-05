@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
 
 namespace MangaToPdf.UIElements
 {
     /// <summary>
-    /// Interaction logic for TaskListItem.xaml
+    ///     Interaction logic for TaskListItem.xaml
     /// </summary>
     public partial class TaskListItem : UserControl
     {
@@ -28,27 +14,15 @@ namespace MangaToPdf.UIElements
 
         public void PrintLogInfo(string message = "")
         {
-            if (message == null)
-            {
-                return;
-            }
+            if (message == null) return;
             if (message.StartsWith("[PROGRESS]"))
             {
-                if (ProgressBar == null)
-                {
-                    return;
-                }
-                Dispatcher.Invoke(() =>
-                {
-                    ProgressBar.Value = int.Parse(message.Split()[1]);
-                });
+                if (ProgressBar == null) return;
+                Dispatcher.Invoke(() => { ProgressBar.Value = int.Parse(message.Split()[1]); });
             }
             else
             {
-                if (LogTextBox == null)
-                {
-                    return;
-                }
+                if (LogTextBox == null) return;
                 LogTextBox.Dispatcher.Invoke(() =>
                 {
                     LogTextBox.AppendText($"{message}\n");
@@ -59,10 +33,7 @@ namespace MangaToPdf.UIElements
 
         public void ClearLog()
         {
-            LogTextBox.Dispatcher.Invoke(() =>
-            {
-                LogTextBox.Clear();
-            });
+            LogTextBox.Dispatcher.Invoke(() => { LogTextBox.Clear(); });
         }
     }
 }

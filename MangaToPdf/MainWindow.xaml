@@ -3,31 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MangaToPdf"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" HorizontalAlignment="Stretch">
-            <Grid  Background="White" ShowGridLines="True">
+            <Grid Background="White">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" x:Name="PathTextBox" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="24" Text="C:/" Margin="0,0,0,0"/>
-                <Button Grid.Column="1" x:Name="ChooseDirButton" Content="Choose directory" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="{ Binding ElementName=PathTextBox, Path=Height }" Background="#FFB9B9B9" Click="ChooseDirButton_Click"/>
+                <TextBox Grid.Column="0" x:Name="PathTextBox" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                         Height="24" Text="C:/" Margin="0,0,0,0" BorderBrush="#FFE8E8E8" Background="#FFE8E8E8" TextChanged="PathTextBox_TextChanged" />
+                <Button x:Name="ChooseDirButton" Content="Выбрать папку" VerticalAlignment="Center" Height="24"
+                        Background="#FF6C757D" Click="ChooseDirButton_Click" Foreground="White" BorderBrush="#FF6C757D"
+                        Grid.Column="1" />
             </Grid>
-            <Button x:Name="ConvertToPdfButton" Content="Convert to PDF" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="31" Click="ConvertToPdfButton_Click"/>
-
+            <Button x:Name="ConvertToPdfButton" Content="Конвертирвать в PDF" Margin="0,0,0,0" VerticalAlignment="Top"
+                    HorizontalAlignment="Stretch" Height="31" Click="ConvertToPdfButton_Click" Foreground="White"
+                    Background="#FF0D6EFD" FontSize="16" FontFamily="Segoe UI" />
         </StackPanel>
 
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Orientation="Vertical" x:Name="TaskListPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            
-            </StackPanel>
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled"
+                      BorderBrush="Black">
+            <StackPanel Orientation="Vertical" x:Name="TaskListPanel" HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch" />
         </ScrollViewer>
 
     </Grid>

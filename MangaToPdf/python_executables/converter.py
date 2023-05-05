@@ -21,17 +21,18 @@ import re
 
 
 # TODO: check volume and chapter order correctness #DONE
-# TODO: make option to combine chapters into volumes (maybe without making of a big all-in-one file) #KINDA DONE
+# TODO: make option to combine chapters into volumes (maybe without making of a big all-in-one file) #DONE
 # TODO: optimize memory usage, delete image folders immediately after convertion
 #       new algo:   foreach zip
 #                       unpack zip -> remove exif -> pdf -> delete folder with unpacked zip
 #                   pdfs -> volumes
 #                   pdfs -> final_pdf
-# TODO: make a normal human-usable menu, idk
+# TODO: make a normal human-usable menu, idk #DONE with WPF
 # TODO: refactor code
-# TODO: webp format of image (wepb -> jpg, or else it reaaly fucks with disk available space, 30Mb+ size pdfs...)
+# TODO: webp format of image (wepb -> jpg, or else it reaaly fucks with disk available space, 30Mb+ size pdfs...) #DONE
 
 REMOVE_EXIF = True
+MAKE_VOLUMES = True
 MAKE_ALL_IN_ONE = False
 
 def print_with_flush(a):
@@ -94,7 +95,6 @@ def name_compare(name1, name2):
 def remove_exif(img_path):
     try:
         image = Image.open(img_path)
-        #image = Image.open(image)
         data = list(image.getdata())
         image_without_exif = Image.new(image.mode, image.size)
         image_without_exif.putdata(data)
@@ -313,23 +313,25 @@ def zip_to_pdf(zip_folder_path):
     print_with_flush("[PROGRESS] 80")
 
     # join chapters into volumes
-    print_with_flush("\nCollecting chapters into volumes: ----------")
-    output_volume_folder_name = "volumes"
-    output_volume_folder_path = join(output_folder_path, output_volume_folder_name)
-    if not os.path.exists(output_volume_folder_path):
-        os.makedirs(output_volume_folder_path)
-    for volume_idx, chapter_paths in volume_dict.items():
-        print_with_flush(f"<-- making volume {volume_idx} -->")
-        merger = PdfMerger()
+    if (MAKE_VOLUMES):
+        print_with_flush("\nCollecting chapters into volumes: ----------")
+        output_volume_folder_name = "volumes"
+        output_volume_folder_path = join(output_folder_path, output_volume_folder_name)
+        if not os.path.exists(output_volume_folder_path):
+            os.makedirs(output_volume_folder_path)
+        for volume_idx, chapter_paths in volume_dict.items():
+            print_with_flush(f"<-- making volume {volume_idx} -->")
+            merger = PdfMerger()
 
-        for pdf in chapter_paths:
-            print_with_flush(pdf)
-            merger.append(pdf)
+            for pdf in chapter_paths:
+                print_with_flush(pdf)
+                merger.append(pdf)
 
-        merger.write(join(output_volume_folder_path, f"{manga_name} Том {volume_idx}.pdf"))
-        merger.close()
-        print_with_flush(f"<-- volume {volume_idx} done -->\n")
+            merger.write(join(output_volume_folder_path, f"{manga_name} Том {volume_idx}.pdf"))
+            merger.close()
+            print_with_flush(f"<-- volume {volume_idx} done -->\n")
     print_with_flush("[PROGRESS] 90")
+
     if MAKE_ALL_IN_ONE:
         # join all chapters into one pdf file
         print_with_flush("\nCollecting chapters into one pdf file: -----")
