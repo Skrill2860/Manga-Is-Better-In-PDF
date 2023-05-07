@@ -2,26 +2,28 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net5.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
         <SignAssembly>false</SignAssembly>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+        <ApplicationIcon />
+        <StartupObject />
+        <TargetFrameworks>net5.0-windows;</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="spoonfork_TradingCard.jpg"/>
+        <None Remove="spoonfork_TradingCard.jpg" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1"/>
+        <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     </ItemGroup>
 
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="pyinstaller &quot;$(ProjectDir)\python_executables\converter.py&quot; --onefile --distpath &quot;$(ProjectDir)\python_executables\dist&quot; --workpath &quot;$(ProjectDir)\python_executables\build&quot; --specpath &quot;$(ProjectDir)\python_executables&quot; -y"/>
+        <Exec Command="pyinstaller &quot;$(ProjectDir)\python_executables\converter.py&quot; --onefile --distpath &quot;$(ProjectDir)\python_executables\dist&quot; --workpath &quot;$(ProjectDir)\python_executables\build&quot; --specpath &quot;$(ProjectDir)\python_executables&quot; -y" />
     </Target>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="xcopy &quot;$(ProjectDir)python_executables\dist\converter.exe&quot; &quot;$(TargetDir)\&quot; /Y&#xD;&#xA;if %25ERRORLEVEL%25 neq 0 (&#xD;&#xA;    echo &quot;Could not copy converter.exe. Error code %25ERRORLEVEL%25&quot;&#xD;&#xA;)&#xD;&#xA;exit 0&#xD;&#xA;"/>
+        <Exec Command="xcopy &quot;$(ProjectDir)python_executables\dist\converter.exe&quot; &quot;$(TargetDir)\&quot; /Y&#xD;&#xA;if %25ERRORLEVEL%25 neq 0 (&#xD;&#xA;    echo &quot;Could not copy converter.exe. Error code %25ERRORLEVEL%25&quot;&#xD;&#xA;)&#xD;&#xA;exit 0&#xD;&#xA;" />
     </Target>
 
 </Project>

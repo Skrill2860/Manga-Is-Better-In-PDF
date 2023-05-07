@@ -233,6 +233,10 @@ def zip_to_pdf(zip_folder_path):
     if zip_folder_path == "":
         print_with_flush("path is empty")
         return
+    
+    if not os.path.exists(zip_folder_path):
+        print_with_flush("directory does not exist")
+        return
 
     output_folder_name = 'output'
     output_folder_path = join(zip_folder_path, output_folder_name)
@@ -243,6 +247,10 @@ def zip_to_pdf(zip_folder_path):
     print_with_flush("\nZIP archives: ------------------------------")
     for s in sorted(zip_archive_names, key=functools.cmp_to_key(name_compare)):
         print_with_flush(s)
+
+    if not zip_archive_names:
+        print("No zip archives found.")
+        return
 
     # extract each zip archive as a folder into /output
     print_with_flush("\nExtraction: --------------------------------")
@@ -377,7 +385,7 @@ def main():
             url_to_pdf(args[1], args[2], args[3])
             return
         if use_url_or_zip.lower()[0] == 'z':
-            print_with_flush("Too many arguments for downloading from zips")
+            print_with_flush("Too many arguments for conversion from zip")
             return
     else:
         print_with_flush("Wrong number of arguments")
@@ -386,5 +394,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
